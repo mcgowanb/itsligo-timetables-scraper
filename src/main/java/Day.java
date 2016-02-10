@@ -1,6 +1,6 @@
 
 public class Day {
-    private String day, subject, time, classNaame, location, lecturer;
+    private String day, subject, time, className, location, lecturer;
 
     public String getDay() {
         return day;
@@ -26,12 +26,12 @@ public class Day {
         this.time = time;
     }
 
-    public String getClassNaame() {
-        return classNaame;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassNaame(String classNaame) {
-        this.classNaame = classNaame;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String getLocation() {
