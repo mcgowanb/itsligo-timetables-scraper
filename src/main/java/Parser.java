@@ -20,7 +20,6 @@ public class Parser {
     {
         Element content = getTimetable(studentID);
         weeklyData = parseDaysFromDoc(content);
-        System.out.println(weeklyData);
     }
 
     private Week parseDaysFromDoc(Element content)

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Week {
     private String department, studentGroup;
+    private Link link;
     private ArrayList<Day> days;
     private Element content;
 
@@ -13,7 +14,14 @@ public class Week {
         this.content = content;
         this.department = parseTitles("dept");
         this.studentGroup = parseTitles("studentgroup");
+        this.link = new Link(parseLink());
         this.days = gatherDays();
+    }
+
+    private Element parseLink()
+    {
+        Element e = content.getElementsByTag("a").first();
+        return e;
     }
 
     private String parseTitles(String selector)
@@ -30,19 +38,20 @@ public class Week {
     private ArrayList<Day> gatherDays()
     {
         days = new ArrayList<Day>();
-        Elements elements = content.getElementsByClass("tt_details");
-        System.out.println(elements);
-//iteration through elements to be refined here.
-        for (Element e : elements) {
-            Day day = new Day();
-            day.setDay(e.getElementsByClass("tt_day").first().text());
-//            day.setSubject(e.getElementsByClass("tt_detail").first().text());
-//            day.setLecturer(e.getElementsByClass("tt_lecturer").first().text());
-            day.setLocation("toDo");
-            day.setTime(e.getElementsByClass("tt_timeslot").first().text());
+        System.out.println(content);
+        Elements dayNames = content.getElementsByClass("tt_day");
+        Elements times = content.getElementsByClass("tt_timeslot");
+        Elements lecturers = content.getElementsByClass("tt_lecturer");
+        Elements details = content.getElementsByClass("tt_detail");
+
+        for (int i = 0; i < dayNames.size(); i++) {
+            Day d = new Day();
+            d.setDay(dayNames.get(i).text());
+            d.setTime(times.get(i).text());
+            d.setLecturer(lecturers.get(i).text());
+            days.add(d);
         }
-
-
+        System.out.println(days);
         return days;
     }
 

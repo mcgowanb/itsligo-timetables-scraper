@@ -49,4 +49,17 @@ public class Day {
     public void setLecturer(String lecturer) {
         this.lecturer = lecturer;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Day{" +
+                "day='" + day + '\'' +
+                ", subject='" + subject + '\'' +
+                ", time='" + time + '\'' +
+                ", className='" + className + '\'' +
+                ", location='" + location + '\'' +
+                ", lecturer='" + lecturer + '\'' +
+                '}';
+    }
 }
