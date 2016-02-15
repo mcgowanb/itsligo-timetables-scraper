@@ -44,7 +44,7 @@ public class TimeTable {
     {
         Elements courseEls = doc.select("div.tt_details:not(:has(div.tt_day, a))");
 
-        coursesByDay = new HashMap<>();
+        coursesByDay = new HashMap<String, List<Course>>();
         for (Element courseEl : courseEls) {
             Element timeSlotEl = courseEl.select(".tt_timeslot").first();
             String timeSlotStr = timeSlotEl.ownText();
@@ -56,7 +56,7 @@ public class TimeTable {
             List<Course> courses = coursesByDay.get(dayStr);
 
             if (courses == null) {
-                courses = new ArrayList<>();
+                courses = new ArrayList<Course>();
                 coursesByDay.put(dayStr, courses);
             }
             courses.add(course);
