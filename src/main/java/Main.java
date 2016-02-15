@@ -1,19 +1,16 @@
 public class Main {
 
-    public static final String url = "https://itsligo.ie/student-hub/my-timetable/";
-    private String studentId;
+    public static final String URL = "https://itsligo.ie/student-hub/my-timetable/";
 
     public static void main(String[] args) {
-        Main tt = new Main();
-        tt.loadData("S00165159");
-
+        loadData(args[0]);
     }
 
 
-    public void loadData(String studentId){
-        this.studentId = studentId;
-        Parser parser = new Parser(url);
-        parser.process(this.studentId);
+    public static void loadData(String studentId){
+        TimeTable timetable = new TimeTable(URL, "S00165159");
+        timetable.generateWeeklyTimetable();
+        System.out.println(timetable);
 
 
     }

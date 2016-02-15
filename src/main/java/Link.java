@@ -3,9 +3,10 @@ import org.jsoup.nodes.Element;
 public class Link {
     private String link, title;
 
-    public Link(Element e){
-        this.link = e.text();
-        this.title = "My funky title";
+    public Link(Element e)
+    {
+        this.link = e.attr("abs:href");
+        this.title = e.text();
     }
 
     public String getLink()

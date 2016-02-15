@@ -1,5 +1,19 @@
-/**
- * Created by Brian on 15/02/2016.
- */
-public class Course {
+
+class Course{
+    public String day;
+    public String time;
+    public String lecturer;
+    public String subject;
+
+    public Course(String day, String time, String lecturer, String subject) {
+        super();
+        this.day = day;
+        this.time = time;
+        this.lecturer = lecturer;
+        this.subject = subject;
+    }
+
+    public String toString(){
+        return time +" : "+ lecturer + " : "+ subject;
+    }
 }
