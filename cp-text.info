@@ -1,0 +1,2 @@
+Brian@BRIAN-LAPTOP /c/dev/java/scraper (master)
+$ java -cp com.mcgowan.timetable.scraper.Main -jar build/libs/scraper-all-1.0-SNAPSHOT.jar S00165159

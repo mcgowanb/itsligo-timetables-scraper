@@ -3,6 +3,7 @@ package com.mcgowan.timetable.scraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -16,10 +17,13 @@ public class TimeTable {
     private Map<String, List<Course>> coursesByDay;
     private Map<String, String> dayNames;
     private String lineBreak = "==================================================";
+    private String status;
+    private boolean isValid;
 
 
     public TimeTable(String url, String studentID)
     {
+        isValid = false;
         this.studentID = studentID;
         this.url = url;
         dayNames = new Day().getDayNames();
@@ -40,6 +44,9 @@ public class TimeTable {
     private void parseDaysFromDoc(Document doc)
     {
         Elements courseEls = doc.select("div.tt_details:not(:has(div.tt_day, a))");
+
+        status = doc.select("section.entry-content > form").first().nextSibling().toString().trim();
+        if(status.length() == 0) isValid = true;
 
         coursesByDay = new LinkedHashMap<String, List<Course>>();
         for (Element courseEl : courseEls) {
@@ -74,7 +81,7 @@ public class TimeTable {
                     .data("view", "View Timetable")
                     .post();
         } catch (IOException e) {
-            e.printStackTrace();
+            status = String.format("Error connecting to %s, please check your internet connection and try again", url);
             return null;
         }
 
@@ -85,19 +92,31 @@ public class TimeTable {
     public String toString()
     {
         String output = "";
-        output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\ncom.mcgowan.timetable.scraper.Link Title: %s\nURL: %s \n", studentID, department, studentGroup, link.getTitle(), link.getLink());
-        for (Map.Entry<String, List<Course>> entry : coursesByDay.entrySet()) {
-            output += entry.getKey() + "\n";
-            output += lineBreak + "\n";
-            for (Course c : entry.getValue()) {
-                output += "\t" + c + "\n";
+        if(isValid) {
+            output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nTitle: %s\nURL: %s \n", studentID, department, studentGroup, link.getTitle(), link.getLink());
+            for (Map.Entry<String, List<Course>> entry : coursesByDay.entrySet()) {
+                output += entry.getKey() + "\n";
+                output += lineBreak + "\n";
+                for (Course c : entry.getValue()) {
+                    output += "\t" + c + "\n";
+                }
             }
         }
+        else output = status;
         return output;
     }
 
     private String selectedTitle(String selector)
     {
-        return doc.select("div." + selector + " > div select option[selected]").first().text();
+        String title;
+        try{
+          title = doc.select("div." + selector + " > div select option[selected]").first().text();
+        }
+        catch(NullPointerException e){
+            title = "";
+        }
+        return title;
+
+
     }
 }
