@@ -4,14 +4,13 @@ public class Main {
 
     public static void main(String[] args)
     {
-        loadData(args[0]);
+        loadData(args[0].toUpperCase());
     }
 
 
     public static void loadData(String studentID)
     {
         TimeTable timetable = new TimeTable(URL, studentID);
-        timetable.generateWeeklyTimetable();
         System.out.println(timetable);
     }
 
