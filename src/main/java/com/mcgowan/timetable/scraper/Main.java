@@ -1,5 +1,7 @@
 package com.mcgowan.timetable.scraper;
 
+import java.io.IOException;
+
 public class Main {
 
     public static final String URL = "https://itsligo.ie/student-hub/my-timetable/";
@@ -12,8 +14,13 @@ public class Main {
 
     public void loadData(String studentID)
     {
-        TimeTable timetable = new TimeTable(URL, studentID);
-        System.out.println(timetable);
+        try{
+            TimeTable timetable = new TimeTable(URL, studentID);
+            System.out.println(timetable);
+        } catch(IOException e){
+            System.out.println(String.format("Unable to connect to %s, please check your connection and try again", URL));
+        }
+
     }
 
 

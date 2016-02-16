@@ -21,7 +21,7 @@ public class TimeTable {
     private boolean isValid;
 
 
-    public TimeTable(String url, String studentID)
+    public TimeTable(String url, String studentID) throws IOException
     {
         isValid = false;
         this.studentID = studentID;
@@ -69,10 +69,9 @@ public class TimeTable {
     }
 
 
-    private Document loadDataFromWeb(String studentID)
+    private Document loadDataFromWeb(String studentID) throws IOException
     {
         Document doc;
-        try {
             doc = Jsoup.connect(url)
                     .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
                     .data("dept", "")
@@ -80,11 +79,6 @@ public class TimeTable {
                     .data("studentgroup", "")
                     .data("view", "View Timetable")
                     .post();
-        } catch (IOException e) {
-            status = String.format("Error connecting to %s, please check your internet connection and try again", url);
-            return null;
-        }
-
         return doc;
     }
 
