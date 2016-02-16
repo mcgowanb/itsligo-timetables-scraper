@@ -79,7 +79,7 @@ public class TimeTable {
         return doc;
     }
 
-
+    @Override
     public String toString()
     {
         String output = "";

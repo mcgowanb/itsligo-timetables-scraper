@@ -14,6 +14,7 @@ class Course {
         this.subject = subject;
     }
 
+    @Override
     public String toString()
     {
         return time + " : " + lecturer + " : " + subject;
