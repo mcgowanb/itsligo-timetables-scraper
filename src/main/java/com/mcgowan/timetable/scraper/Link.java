@@ -1,3 +1,5 @@
+package com.mcgowan.timetable.scraper;
+
 import org.jsoup.nodes.Element;
 
 public class Link {

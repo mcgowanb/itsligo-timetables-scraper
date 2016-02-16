@@ -1,3 +1,5 @@
+package com.mcgowan.timetable.scraper;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -83,7 +85,7 @@ public class TimeTable {
     public String toString()
     {
         String output = "";
-        output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nLink Title: %s\nURL: %s \n", studentID, department, studentGroup, link.getTitle(), link.getLink());
+        output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\ncom.mcgowan.timetable.scraper.Link Title: %s\nURL: %s \n", studentID, department, studentGroup, link.getTitle(), link.getLink());
         for (Map.Entry<String, List<Course>> entry : coursesByDay.entrySet()) {
             output += entry.getKey() + "\n";
             output += lineBreak + "\n";

@@ -1,3 +1,4 @@
+package com.mcgowan.timetable.scraper;
 
 class Course {
     public String day;
