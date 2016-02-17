@@ -3,7 +3,6 @@ package com.mcgowan.timetable.scraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -30,8 +29,8 @@ public class TimeTable {
         this.doc = loadDataFromWeb(studentID);
         parseDaysFromDoc(doc);
         generateLink();
-        department = selectedTitle("select-dept");
-        studentGroup = selectedTitle("select-studentgroup");
+        department = new SelectedOption(doc, "#dept").toString();
+        studentGroup = new SelectedOption(doc, "#studentgroup").toString();
     }
 
 
@@ -46,7 +45,9 @@ public class TimeTable {
         Elements courseEls = doc.select("div.tt_details:not(:has(div.tt_day, a))");
 
         status = doc.select("section.entry-content > form").first().nextSibling().toString().trim();
-        if(status.length() == 0) isValid = true;
+        if (status.length() == 0) {
+            isValid = true;
+        }
 
         coursesByDay = new LinkedHashMap<String, List<Course>>();
         for (Element courseEl : courseEls) {
@@ -71,14 +72,13 @@ public class TimeTable {
 
     private Document loadDataFromWeb(String studentID) throws IOException
     {
-        Document doc;
-            doc = Jsoup.connect(url)
-                    .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
-                    .data("dept", "")
-                    .data("student_id", studentID)
-                    .data("studentgroup", "")
-                    .data("view", "View Timetable")
-                    .post();
+        doc = Jsoup.connect(url)
+                .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                .data("dept", "")
+                .data("student_id", studentID)
+                .data("studentgroup", "")
+                .data("view", "View Timetable")
+                .post();
         return doc;
     }
 
@@ -86,7 +86,7 @@ public class TimeTable {
     public String toString()
     {
         String output = "";
-        if(isValid) {
+        if (isValid) {
             output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nTitle: %s\nURL: %s \n", studentID, department, studentGroup, link.getTitle(), link.getLink());
             for (Map.Entry<String, List<Course>> entry : coursesByDay.entrySet()) {
                 output += entry.getKey() + "\n";
@@ -96,17 +96,18 @@ public class TimeTable {
                 }
             }
         }
-        else output = status;
+        else {
+            output = status;
+        }
         return output;
     }
 
     private String selectedTitle(String selector)
     {
         String title;
-        try{
-          title = doc.select("div." + selector + " > div select option[selected]").first().text();
-        }
-        catch(NullPointerException e){
+        try {
+            title = doc.select("div." + selector + " > div select option[selected]").first().text();
+        } catch (NullPointerException e) {
             title = "";
         }
         return title;

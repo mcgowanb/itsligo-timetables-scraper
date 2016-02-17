@@ -8,7 +8,8 @@ public class Main {
 
     public static void main(String[] args)
     {
-        new Main().loadData(args[0].toUpperCase());
+//        new Main().loadData(args[0].toUpperCase());
+        new Main().loadLabs();
     }
 
 
@@ -21,6 +22,15 @@ public class Main {
             System.out.println(String.format("Unable to connect to %s, please check your connection and try again", URL));
         }
 
+    }
+
+    public void loadLabs(){
+        try{
+            AvailableLabs labs = new AvailableLabs();
+        }
+        catch(IOException e){
+
+        }
     }
 
 

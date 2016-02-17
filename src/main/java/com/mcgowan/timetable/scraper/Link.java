@@ -3,7 +3,7 @@ package com.mcgowan.timetable.scraper;
 import org.jsoup.nodes.Element;
 
 public class Link {
-    private String link, title;
+    protected String link, title;
 
     public Link(Element e)
     {
