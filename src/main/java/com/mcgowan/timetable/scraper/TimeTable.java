@@ -20,6 +20,12 @@ public class TimeTable {
     private boolean isValid;
 
 
+    /**
+     * Takes Student ID and URL for website. Returns object of weekly timetable
+     * @param url
+     * @param studentID
+     * @throws IOException
+     */
     public TimeTable(String url, String studentID) throws IOException
     {
         isValid = false;
@@ -33,13 +39,19 @@ public class TimeTable {
         studentGroup = new SelectedOption(doc, "#studentgroup").toString();
     }
 
-
+    /**
+     * returns link for the timetable site view
+     */
     private void generateLink()
     {
         Element e = doc.select("div.tt_details > div.tt_detail > a").first();
         link = new Link(e);
     }
 
+    /**
+     * generates list of days and respective classes for each day
+     * @param doc
+     */
     private void parseDaysFromDoc(Document doc)
     {
         Elements courseEls = doc.select("div.tt_details:not(:has(div.tt_day, a))");
@@ -69,7 +81,12 @@ public class TimeTable {
         }
     }
 
-
+    /**
+     * loads document from web
+     * @param studentID
+     * @return
+     * @throws IOException
+     */
     private Document loadDataFromWeb(String studentID) throws IOException
     {
         doc = Jsoup.connect(url)
@@ -103,6 +120,11 @@ public class TimeTable {
         return output;
     }
 
+    /**
+     * returns selected item
+     * @param selector
+     * @return
+     */
     private String selectedTitle(String selector)
     {
         String title;
@@ -112,7 +134,5 @@ public class TimeTable {
             title = "";
         }
         return title;
-
-
     }
 }

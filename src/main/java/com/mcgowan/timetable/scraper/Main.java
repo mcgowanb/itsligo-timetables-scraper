@@ -27,7 +27,7 @@ public class Main {
 
     public void loadLabs(){
         try{
-            AvailableLabs labs = new AvailableLabs("5");
+            AvailableLabs labs = new AvailableLabs(ROOM_URL, "2");
             System.out.println(labs);
         }
         catch(IOException e){

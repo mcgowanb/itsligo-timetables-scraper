@@ -13,33 +13,47 @@ import java.util.Map;
 
 public class AvailableLabs {
 
-    private final String URL = "https://itsligo.ie/student-hub/computer-labs/";
     private Document doc;
     private Map<String, List<Lab>> labsByDay;
     private String day;
 
-    public AvailableLabs() throws IOException
+    /**
+     * Takes URL only. Use this to load available classes for the current day
+     * @throws IOException
+     */
+    public AvailableLabs(String URL) throws IOException
     {
-        //overload loadPage if params are set
-        this.doc = loadPage();
+        this.doc = loadPage(URL);
         parseClassesPerDay(doc);
         this.day = getDayFromDoc();
     }
 
-    public AvailableLabs(String day) throws IOException
+    /**
+     * Takes URL and String of integer value 1 - 5 to represent Monday to Friday. Returns available classes for day requested
+     * @param day
+     * @throws IOException
+     */
+    public AvailableLabs(String URL, String day) throws IOException
     {
-        this.doc = loadPage(day);
+        this.doc = loadPage(URL, day);
         parseClassesPerDay(doc);
         this.day = getDayFromDoc();
-//        this();
     }
 
+    /**
+     * returns day of week from current docuument
+     * @return
+     */
     private String getDayFromDoc()
     {
         day = new SelectedOption(doc, "#dayofweek").toString();
         return day;
     }
 
+    /**
+     * creates main object for consumption
+     * @param doc
+     */
     private void parseClassesPerDay(Document doc)
     {
         Elements timeSlots = doc.select("div.timeslot");
@@ -48,7 +62,9 @@ public class AvailableLabs {
 
         for (Element slot : timeSlots) {
             String time = slot.select(".time").first().text();
-            if (time.contains("30")) continue;
+            if (time.contains("30")) {
+                continue;
+            }
             Elements room = slot.select(".room");
 
             List<Lab> labs = new ArrayList<Lab>();
@@ -60,13 +76,24 @@ public class AvailableLabs {
         }
     }
 
-    private Document loadPage() throws IOException
+    /**
+     * loads HTML into JSOUP document via GET with no arguements
+     * @return
+     * @throws IOException
+     */
+    private Document loadPage(String URL) throws IOException
     {
         doc = Jsoup.connect(URL).get();
         return doc;
     }
 
-    private Document loadPage(String day) throws IOException
+    /**
+     * loads HTML into JSOUP document via GET with day of week as argument
+     * @param day
+     * @return
+     * @throws IOException
+     */
+    private Document loadPage(String URL, String day) throws IOException
     {
         doc = Jsoup.connect(URL)
                 .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -82,12 +109,11 @@ public class AvailableLabs {
         for (Map.Entry<String, List<Lab>> entry : labsByDay.entrySet()) {
             output += entry.getKey() + "\n";
             output += TimeTable.lineBreak + "\n";
-            for (Lab l : entry.getValue()){
+            for (Lab l : entry.getValue()) {
                 output += l;
             }
             output += "\n" + TimeTable.lineBreak + "\n";
         }
-
 
 
         return output;
