@@ -1,6 +1,5 @@
 package com.mcgowan.timetable.scraper;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,6 +24,14 @@ public class AvailableLabs {
         this.doc = loadPage();
         parseClassesPerDay(doc);
         this.day = getDayFromDoc();
+    }
+
+    public AvailableLabs(String day) throws IOException
+    {
+        this.doc = loadPage(day);
+        parseClassesPerDay(doc);
+        this.day = getDayFromDoc();
+//        this();
     }
 
     private String getDayFromDoc()
@@ -59,10 +66,19 @@ public class AvailableLabs {
         return doc;
     }
 
+    private Document loadPage(String day) throws IOException
+    {
+        doc = Jsoup.connect(URL)
+                .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                .data("dayofweek", day)
+                .post();
+        return doc;
+    }
+
     @Override
     public String toString()
     {
-        String output = "";
+        String output = String.format("%s\n\n", day);
         for (Map.Entry<String, List<Lab>> entry : labsByDay.entrySet()) {
             output += entry.getKey() + "\n";
             output += TimeTable.lineBreak + "\n";

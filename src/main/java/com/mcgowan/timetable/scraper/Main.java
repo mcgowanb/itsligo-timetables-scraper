@@ -9,8 +9,8 @@ public class Main {
 
     public static void main(String[] args)
     {
-        new Main().loadData(args[0].toUpperCase());
-//        new Main().loadLabs();
+//        new Main().loadData(args[0].toUpperCase());
+        new Main().loadLabs();
     }
 
 
@@ -27,7 +27,7 @@ public class Main {
 
     public void loadLabs(){
         try{
-            AvailableLabs labs = new AvailableLabs();
+            AvailableLabs labs = new AvailableLabs("5");
             System.out.println(labs);
         }
         catch(IOException e){
