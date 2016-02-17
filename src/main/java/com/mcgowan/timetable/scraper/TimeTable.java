@@ -15,7 +15,7 @@ public class TimeTable {
     private Document doc;
     private Map<String, List<Course>> coursesByDay;
     private Map<String, String> dayNames;
-    private String lineBreak = "==================================================";
+    public static final String lineBreak = "==================================================";
     private String status;
     private boolean isValid;
 
@@ -87,7 +87,8 @@ public class TimeTable {
     {
         String output = "";
         if (isValid) {
-            output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nTitle: %s\nURL: %s \n", studentID, department, studentGroup, link.getTitle(), link.getLink());
+            output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nTitle: %s\nURL: %s \n",
+                    studentID, department, studentGroup, link.getTitle(), link.getLink());
             for (Map.Entry<String, List<Course>> entry : coursesByDay.entrySet()) {
                 output += entry.getKey() + "\n";
                 output += lineBreak + "\n";

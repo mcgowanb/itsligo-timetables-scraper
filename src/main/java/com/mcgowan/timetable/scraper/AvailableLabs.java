@@ -41,6 +41,7 @@ public class AvailableLabs {
 
         for (Element slot : timeSlots) {
             String time = slot.select(".time").first().text();
+            if (time.contains("30")) continue;
             Elements room = slot.select(".room");
 
             List<Lab> labs = new ArrayList<Lab>();
@@ -56,5 +57,23 @@ public class AvailableLabs {
     {
         doc = Jsoup.connect(URL).get();
         return doc;
+    }
+
+    @Override
+    public String toString()
+    {
+        String output = "";
+        for (Map.Entry<String, List<Lab>> entry : labsByDay.entrySet()) {
+            output += entry.getKey() + "\n";
+            output += TimeTable.lineBreak + "\n";
+            for (Lab l : entry.getValue()){
+                output += l;
+            }
+            output += "\n" + TimeTable.lineBreak + "\n";
+        }
+
+
+
+        return output;
     }
 }
