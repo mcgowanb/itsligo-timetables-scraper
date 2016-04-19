@@ -6,9 +6,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
-public class TimeTable {
+public class TimeTable implements Serializable {
 
     private String url, studentID, department, studentGroup;
     private Link link;

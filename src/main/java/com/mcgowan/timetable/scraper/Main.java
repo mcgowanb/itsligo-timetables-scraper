@@ -9,8 +9,8 @@ public class Main {
 
     public static void main(String[] args)
     {
-//        new Main().loadData(args[0].toUpperCase());
-        new Main().loadLabs();
+        new Main().loadData(args[0].toUpperCase());
+//        new Main().loadLabs();
     }
 
 

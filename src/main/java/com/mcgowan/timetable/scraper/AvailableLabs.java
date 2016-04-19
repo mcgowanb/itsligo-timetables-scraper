@@ -6,12 +6,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AvailableLabs {
+public class AvailableLabs implements Serializable {
 
     private Document doc;
     private Map<String, List<Lab>> labsByDay;
