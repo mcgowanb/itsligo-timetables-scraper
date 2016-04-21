@@ -7,8 +7,7 @@ public class Day {
 
     private Map<String, String> dayNames;
 
-    public Day()
-    {
+    public Day() {
         String[] sNames = {"Mon", "Tue", "Wed", "Thu", "Fri"};
         String[] names = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         dayNames = new LinkedHashMap<String, String>();
@@ -18,8 +17,7 @@ public class Day {
         }
     }
 
-    public Map<String, String> getDayNames()
-    {
+    public Map<String, String> getDayNames() {
         return dayNames;
     }
 }
