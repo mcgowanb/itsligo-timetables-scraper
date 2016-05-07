@@ -7,10 +7,11 @@ public class SelectedOption {
 
     /**
      * returns selected option as a string from a list of options
+     *
      * @param doc
      * @param selector
      */
-    public SelectedOption(Document doc, String selector){
+    public SelectedOption(Document doc, String selector) {
         try {
             this.name = doc.select("select" + selector + " > option[selected]").first().text();
         } catch (NullPointerException e) {
@@ -19,8 +20,7 @@ public class SelectedOption {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 }

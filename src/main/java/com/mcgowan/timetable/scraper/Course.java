@@ -6,8 +6,7 @@ class Course {
     public String lecturer;
     public String subject;
 
-    public Course(String day, String time, String lecturer, String subject)
-    {
+    public Course(String day, String time, String lecturer, String subject) {
         super();
         this.day = day;
         this.time = time;
@@ -16,8 +15,7 @@ class Course {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return time + " : " + lecturer + " : " + subject;
     }
 }

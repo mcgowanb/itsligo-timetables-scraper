@@ -5,13 +5,12 @@ import org.jsoup.nodes.Element;
 
 public class Lab extends Link {
 
-    public Lab(Element e){
+    public Lab(Element e) {
         super(e);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return title + ", ";
     }
 }

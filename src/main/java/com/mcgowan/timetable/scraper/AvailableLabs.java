@@ -20,10 +20,10 @@ public class AvailableLabs implements Serializable {
 
     /**
      * Takes URL only. Use this to load available classes for the current day
+     *
      * @throws IOException
      */
-    public AvailableLabs(String URL) throws IOException
-    {
+    public AvailableLabs(String URL) throws IOException {
         this.doc = loadPage(URL);
         parseClassesPerDay(doc);
         this.day = getDayFromDoc();
@@ -31,11 +31,11 @@ public class AvailableLabs implements Serializable {
 
     /**
      * Takes URL and String of integer value 1 - 5 to represent Monday to Friday. Returns available classes for day requested
+     *
      * @param day
      * @throws IOException
      */
-    public AvailableLabs(String URL, String day) throws IOException
-    {
+    public AvailableLabs(String URL, String day) throws IOException {
         this.doc = loadPage(URL, day);
         parseClassesPerDay(doc);
         this.day = getDayFromDoc();
@@ -43,20 +43,20 @@ public class AvailableLabs implements Serializable {
 
     /**
      * returns day of week from current docuument
+     *
      * @return
      */
-    private String getDayFromDoc()
-    {
+    private String getDayFromDoc() {
         day = new SelectedOption(doc, "#dayofweek").toString();
         return day;
     }
 
     /**
      * creates main object for consumption
+     *
      * @param doc
      */
-    private void parseClassesPerDay(Document doc)
-    {
+    private void parseClassesPerDay(Document doc) {
         Elements timeSlots = doc.select("div.timeslot");
 
         labsByDay = new LinkedHashMap<String, List<Lab>>();
@@ -79,23 +79,23 @@ public class AvailableLabs implements Serializable {
 
     /**
      * loads HTML into JSOUP document via GET with no arguements
+     *
      * @return
      * @throws IOException
      */
-    private Document loadPage(String URL) throws IOException
-    {
+    private Document loadPage(String URL) throws IOException {
         doc = Jsoup.connect(URL).get();
         return doc;
     }
 
     /**
      * loads HTML into JSOUP document via GET with day of week as argument
+     *
      * @param day
      * @return
      * @throws IOException
      */
-    private Document loadPage(String URL, String day) throws IOException
-    {
+    private Document loadPage(String URL, String day) throws IOException {
         doc = Jsoup.connect(URL)
                 .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
                 .data("dayofweek", day)
@@ -104,8 +104,7 @@ public class AvailableLabs implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String output = String.format("%s\n\n", day);
         for (Map.Entry<String, List<Lab>> entry : labsByDay.entrySet()) {
             output += entry.getKey() + "\n";

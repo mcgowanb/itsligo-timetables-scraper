@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TimeTable implements Serializable {
@@ -14,21 +15,22 @@ public class TimeTable implements Serializable {
     private String url, studentID, department, studentGroup;
     private Link link;
     private Document doc;
-    private Map<String, List<Course>> coursesByDay;
+    private Map<String, List<Course>> days;
     private Map<String, String> dayNames;
     public static final String lineBreak = "==================================================";
-    private String status;
+    private String status, todayDay;
     private boolean isValid;
+    private List<Course> today;
 
 
     /**
      * Takes Student ID and URL for website. Returns object of weekly timetable
+     *
      * @param url
      * @param studentID
      * @throws IOException
      */
-    public TimeTable(String url, String studentID) throws IOException
-    {
+    public TimeTable(String url, String studentID) throws IOException {
         isValid = false;
         this.studentID = studentID;
         this.url = url;
@@ -38,23 +40,33 @@ public class TimeTable implements Serializable {
         generateLink();
         department = new SelectedOption(doc, "#dept").toString();
         studentGroup = new SelectedOption(doc, "#studentgroup").toString();
+        doc = null;
+        this.todayDay = new SimpleDateFormat("EEEE").format(new Date());
+    }
+
+    /**
+     * Takes day name in string format and returns classes for that particular day
+     * @param day
+     * @return
+     */
+    public List<Course> classesForDay(String day) {
+        return days.get(day);
     }
 
     /**
      * returns link for the timetable site view
      */
-    private void generateLink()
-    {
+    private void generateLink() {
         Element e = doc.select("div.tt_details > div.tt_detail > a").first();
         link = new Link(e);
     }
 
     /**
      * generates list of days and respective classes for each day
+     *
      * @param doc
      */
-    private void parseDaysFromDoc(Document doc)
-    {
+    private void parseDaysFromDoc(Document doc) {
         Elements courseEls = doc.select("div.tt_details:not(:has(div.tt_day, a))");
 
         status = doc.select("section.entry-content > form").first().nextSibling().toString().trim();
@@ -62,7 +74,7 @@ public class TimeTable implements Serializable {
             isValid = true;
         }
 
-        coursesByDay = new LinkedHashMap<String, List<Course>>();
+        days = new LinkedHashMap<String, List<Course>>();
         for (Element courseEl : courseEls) {
             Element timeSlotEl = courseEl.select(".tt_timeslot").first();
             String timeSlotStr = timeSlotEl.ownText();
@@ -72,11 +84,11 @@ public class TimeTable implements Serializable {
             String lecturerStr = courseEl.select(".tt_lecturer").first().text();
 
             Course course = new Course(dayStr, timeSlotStr, lecturerStr, detailStr);
-            List<Course> courses = coursesByDay.get(dayStr);
+            List<Course> courses = days.get(dayStr);
 
             if (courses == null) {
                 courses = new ArrayList<Course>();
-                coursesByDay.put(dayStr, courses);
+                days.put(dayStr, courses);
             }
             courses.add(course);
         }
@@ -84,12 +96,12 @@ public class TimeTable implements Serializable {
 
     /**
      * loads document from web
+     *
      * @param studentID
      * @return
      * @throws IOException
      */
-    private Document loadDataFromWeb(String studentID) throws IOException
-    {
+    private Document loadDataFromWeb(String studentID) throws IOException {
         doc = Jsoup.connect(url)
                 .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
                 .data("dept", "")
@@ -101,21 +113,19 @@ public class TimeTable implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String output = "";
         if (isValid) {
             output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nTitle: %s\nURL: %s \n",
                     studentID, department, studentGroup, link.getTitle(), link.getLink());
-            for (Map.Entry<String, List<Course>> entry : coursesByDay.entrySet()) {
+            for (Map.Entry<String, List<Course>> entry : days.entrySet()) {
                 output += entry.getKey() + "\n";
                 output += lineBreak + "\n";
                 for (Course c : entry.getValue()) {
                     output += "\t" + c + "\n";
                 }
             }
-        }
-        else {
+        } else {
             output = status;
         }
         return output;
@@ -123,11 +133,11 @@ public class TimeTable implements Serializable {
 
     /**
      * returns selected item
+     *
      * @param selector
      * @return
      */
-    private String selectedTitle(String selector)
-    {
+    private String selectedTitle(String selector) {
         String title;
         try {
             title = doc.select("div." + selector + " > div select option[selected]").first().text();

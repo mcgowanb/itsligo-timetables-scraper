@@ -1,6 +1,9 @@
 package com.mcgowan.timetable.scraper;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class Main {
 
@@ -16,6 +19,11 @@ public class Main {
     public void loadData(String studentID) {
         try {
             TimeTable timetable = new TimeTable(STUDENT_URL, studentID);
+
+            String today = new SimpleDateFormat("EEEE").format(new Date());
+
+            List<Course> t = timetable.classesForDay("Tuesday");
+
             System.out.println(timetable);
         } catch (IOException e) {
             System.out.println(String.format("Unable to connect to %s, please check your connection and try again", STUDENT_URL));
