@@ -18,9 +18,8 @@ public class TimeTable implements Serializable {
     private Map<String, List<Course>> days;
     private Map<String, String> dayNames;
     public static final String lineBreak = "==================================================";
-    private String status, todayDay;
+    private String status;
     private boolean isValid;
-    private List<Course> today;
 
 
     /**
@@ -41,7 +40,6 @@ public class TimeTable implements Serializable {
         department = new SelectedOption(doc, "#dept").toString();
         studentGroup = new SelectedOption(doc, "#studentgroup").toString();
         doc = null;
-        this.todayDay = new SimpleDateFormat("EEEE").format(new Date());
     }
 
     /**
@@ -74,7 +72,7 @@ public class TimeTable implements Serializable {
             isValid = true;
         }
 
-        days = new LinkedHashMap<String, List<Course>>();
+        days = new LinkedHashMap<>();
         for (Element courseEl : courseEls) {
             Element timeSlotEl = courseEl.select(".tt_timeslot").first();
             String timeSlotStr = timeSlotEl.ownText();
@@ -87,7 +85,7 @@ public class TimeTable implements Serializable {
             List<Course> courses = days.get(dayStr);
 
             if (courses == null) {
-                courses = new ArrayList<Course>();
+                courses = new ArrayList<>();
                 days.put(dayStr, courses);
             }
             courses.add(course);

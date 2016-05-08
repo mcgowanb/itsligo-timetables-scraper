@@ -5,6 +5,7 @@ class Course {
     public String time;
     public String lecturer;
     public String subject;
+    public String startTime, endTime;
 
     public Course(String day, String time, String lecturer, String subject) {
         super();
@@ -12,6 +13,13 @@ class Course {
         this.time = time;
         this.lecturer = lecturer;
         this.subject = subject;
+        formatTimes(this.time);
+    }
+
+    private void formatTimes(String time) {
+        String[] elems = time.split("-");
+        this.startTime = elems[0].trim();
+        this.endTime = elems[1].trim();
     }
 
     @Override
