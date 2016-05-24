@@ -7,7 +7,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TimeTable implements Serializable {
@@ -34,16 +33,16 @@ public class TimeTable implements Serializable {
         this.studentID = studentID;
         this.url = url;
         dayNames = new Day().getDayNames();
-        this.doc = loadDataFromWeb(studentID);
+        doc = loadDataFromWeb(studentID);
         parseDaysFromDoc(doc);
         generateLink();
         department = new SelectedOption(doc, "#dept").toString();
         studentGroup = new SelectedOption(doc, "#studentgroup").toString();
-        doc = null;
     }
 
     /**
      * Takes day name in string format and returns classes for that particular day
+     *
      * @param day
      * @return
      */
@@ -143,5 +142,20 @@ public class TimeTable implements Serializable {
             title = "";
         }
         return title;
+    }
+
+    public Map<String, List<Course>> getDays() {
+        return days;
+    }
+    public String getDepartment() {
+        return department;
+    }
+
+    public String getStudentGroup() {
+        return studentGroup;
+    }
+
+    public Link getLink() {
+        return link;
     }
 }

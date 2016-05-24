@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
-    public static final String STUDENT_URL = "https://itsligo.ie/student-hub/my-timetable/";
-    public static final String ROOM_URL = "https://itsligo.ie/student-hub/computer-labs/";
+    private static final String STUDENT_URL = "https://itsligo.ie/student-hub/my-timetable/";
+    private static final String ROOM_URL = "https://itsligo.ie/student-hub/computer-labs/";
 
     public static void main(String[] args) {
         new Main().loadData(args[0].toUpperCase());
@@ -16,7 +17,7 @@ public class Main {
     }
 
 
-    public void loadData(String studentID) {
+    private void loadData(String studentID) {
         try {
             TimeTable timetable = new TimeTable(STUDENT_URL, studentID);
 
@@ -24,6 +25,7 @@ public class Main {
 
             List<Course> t = timetable.classesForDay("Tuesday");
 
+String s = timetable.getStudentGroup();
             System.out.println(timetable);
         } catch (IOException e) {
             System.out.println(String.format("Unable to connect to %s, please check your connection and try again", STUDENT_URL));
