@@ -25,7 +25,7 @@ public class Main {
 
             List<Course> t = timetable.classesForDay("Tuesday");
 
-String s = timetable.getStudentGroup();
+            String s = timetable.getStudentGroup();
             System.out.println(timetable);
         } catch (IOException e) {
             System.out.println(String.format("Unable to connect to %s, please check your connection and try again", STUDENT_URL));

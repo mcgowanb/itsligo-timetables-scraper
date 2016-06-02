@@ -1,6 +1,6 @@
 package com.mcgowan.timetable.scraper;
 
-class Course {
+public class Course {
     private String day;
     private String time;
     private String lecturer;
@@ -24,7 +24,7 @@ class Course {
 
     @Override
     public String toString() {
-        return time + " : " + lecturer + " : " + subject;
+        return String.format("%s : %s : %s : %s", day, time, lecturer, subject);
     }
 
     public String getDay() {

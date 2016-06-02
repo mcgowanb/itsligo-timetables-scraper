@@ -71,7 +71,7 @@ public class TimeTable implements Serializable {
             isValid = true;
         }
 
-        days = new LinkedHashMap<>();
+        days = new LinkedHashMap<String, List<Course>>();
         for (Element courseEl : courseEls) {
             Element timeSlotEl = courseEl.select(".tt_timeslot").first();
             String timeSlotStr = timeSlotEl.ownText();
@@ -84,7 +84,7 @@ public class TimeTable implements Serializable {
             List<Course> courses = days.get(dayStr);
 
             if (courses == null) {
-                courses = new ArrayList<>();
+                courses = new ArrayList<Course>();
                 days.put(dayStr, courses);
             }
             courses.add(course);
