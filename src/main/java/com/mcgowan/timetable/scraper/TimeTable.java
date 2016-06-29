@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -18,8 +17,6 @@ public class TimeTable implements Serializable {
     private Map<String, List<Course>> days;
     private Map<String, String> dayNames;
     public static final String lineBreak = "==================================================";
-    private static final String ERROR_400_MESSAGE = "400 Bad Request";
-    private static final int ERROR_400 = 400;
     private String status;
     private boolean isValid;
 
@@ -66,12 +63,12 @@ public class TimeTable implements Serializable {
      *
      * @param doc
      */
-    private void parseDaysFromDoc(Document doc) throws HTTPException {
+    private void parseDaysFromDoc(Document doc) {
         Elements courseEls = doc.select("div.tt_details:not(:has(div.tt_day, a))");
 
         status = doc.select("section.entry-content > form").first().nextSibling().toString().trim();
-        if (status.contains(ERROR_400_MESSAGE)) {
-            throw new HTTPException(ERROR_400);
+        if (status.length() == 0) {
+            isValid = true;
         }
 
         days = new LinkedHashMap<String, List<Course>>();
