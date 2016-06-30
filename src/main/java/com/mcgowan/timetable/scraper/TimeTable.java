@@ -147,6 +147,7 @@ public class TimeTable implements Serializable {
     public Map<String, List<Course>> getDays() {
         return days;
     }
+
     public String getDepartment() {
         return department;
     }
@@ -157,5 +158,9 @@ public class TimeTable implements Serializable {
 
     public Link getLink() {
         return link;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
