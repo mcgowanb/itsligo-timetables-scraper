@@ -11,7 +11,7 @@ import java.util.*;
 
 public class TimeTable implements Serializable {
 
-    private String url, studentID, department, studentGroup;
+    private String url, studentID, department, studentGroup, deptKey, groupKey;
     private Link link;
     private Document doc;
     private Map<String, List<Course>> days;
@@ -23,7 +23,6 @@ public class TimeTable implements Serializable {
 
     /**
      * Takes Student ID and URL for website. Returns object of weekly timetable
-     *
      * @param url
      * @param studentID
      * @throws IOException
@@ -38,7 +37,25 @@ public class TimeTable implements Serializable {
         generateLink();
         department = new SelectedOption(doc, "#dept").toString();
         studentGroup = new SelectedOption(doc, "#studentgroup").toString();
+        deptKey = new SelectedOption(doc, "#dept", true).toString();
+        groupKey = new SelectedOption(doc, "#studentgroup", true).toString();
     }
+
+
+    public TimeTable(String url, String dept, String group) throws IOException{
+        isValid = false;
+        this.url = url;
+        dayNames = new Day().getDayNames();
+        doc = loadDataFromWeb(dept, group);
+        parseDaysFromDoc(doc);
+        generateLink();
+        department = new SelectedOption(doc, "#dept").toString();
+        studentGroup = new SelectedOption(doc, "#studentgroup").toString();
+        deptKey = new SelectedOption(doc, "#dept", true).toString();
+        groupKey = new SelectedOption(doc, "#studentgroup", true).toString();
+    }
+
+
 
     /**
      * Takes day name in string format and returns classes for that particular day
@@ -109,12 +126,28 @@ public class TimeTable implements Serializable {
         return doc;
     }
 
+    /**
+     * loads document from web
+     *
+     * @return
+     * @throws IOException
+     */
+    private Document loadDataFromWeb(String dept, String group) throws IOException {
+        doc = Jsoup.connect(url)
+                .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                .data("dept", dept)
+                .data("studentgroup", group)
+                .data("view", "View Timetable")
+                .post();
+        return doc;
+    }
+
     @Override
     public String toString() {
         String output = "";
         if (isValid) {
-            output += String.format("Student Number: %s\nDepartment: %s\nClass: %s\nTitle: %s\nURL: %s \n",
-                    studentID, department, studentGroup, link.getTitle(), link.getLink());
+            output += String.format("Student Number: %s\nDepartment: %s \nDepartment Key: %s\nStudent Group: %s\nGroup Key: %s\nTitle: %s\nURL: %s \n",
+                    studentID, department, deptKey, studentGroup, groupKey, link.getTitle(), link.getLink());
             for (Map.Entry<String, List<Course>> entry : days.entrySet()) {
                 output += entry.getKey() + "\n";
                 output += lineBreak + "\n";
@@ -162,5 +195,13 @@ public class TimeTable implements Serializable {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getDeptKey() {
+        return deptKey;
+    }
+
+    public String getGroupKey() {
+        return groupKey;
     }
 }
