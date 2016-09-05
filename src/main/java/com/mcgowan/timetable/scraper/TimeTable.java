@@ -33,20 +33,18 @@ public class TimeTable implements Serializable {
         this.url = url;
         dayNames = new Day().getDayNames();
         doc = loadDataFromWeb(studentID);
-        parseDaysFromDoc(doc);
-        generateLink();
-        department = new SelectedOption(doc, "#dept").toString();
-        studentGroup = new SelectedOption(doc, "#studentgroup").toString();
-        deptKey = new SelectedOption(doc, "#dept", true).toString();
-        groupKey = new SelectedOption(doc, "#studentgroup", true).toString();
     }
 
 
     public TimeTable(String url, String dept, String group) throws IOException{
         isValid = false;
         this.url = url;
-        dayNames = new Day().getDayNames();
         doc = loadDataFromWeb(dept, group);
+    }
+
+
+    public void process() throws IOException{
+        dayNames = new Day().getDayNames();
         parseDaysFromDoc(doc);
         generateLink();
         department = new SelectedOption(doc, "#dept").toString();
@@ -54,7 +52,6 @@ public class TimeTable implements Serializable {
         deptKey = new SelectedOption(doc, "#dept", true).toString();
         groupKey = new SelectedOption(doc, "#studentgroup", true).toString();
     }
-
 
 
     /**

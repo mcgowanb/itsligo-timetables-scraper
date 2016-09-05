@@ -21,7 +21,7 @@ public class Main {
         try {
             TimeTable timetable = new TimeTable(STUDENT_URL, studentID);
 //            TimeTable timetable = new TimeTable(STUDENT_URL, "computing", "SG%5FKGDEV%5FB07%2FF%2FY3%2F1%2F%28A%29");
-//            timetable.processURI();
+            timetable.process();
             String today = new SimpleDateFormat("EEEE").format(new Date());
 
             List<Course> t = timetable.classesForDay("Tuesday");
